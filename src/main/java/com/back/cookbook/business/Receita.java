@@ -5,12 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 @Entity(name = "Receita")
+@Table(name = "Receita")
 public class Receita {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "receita_sequence")
+    @SequenceGenerator(sequenceName = "receita_sequence", name = "rec_seq") 
+    private Integer id;
     @Column(name = "nome")
     private String nome;
     @Column(name = "modo_prep")
@@ -24,8 +28,7 @@ public class Receita {
     @Column(name = "custo")
     private String custo;
 
-    public Receita(int id, String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo){
-        this.id = id;
+    public Receita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo){
         this.nome = nome;
         this.modo_prep = modo_prep;
         this.ingredientes = ingredientes;
@@ -35,7 +38,7 @@ public class Receita {
     }
 
     // Getter
-    public int getId(){
+    public Integer getId(){
         return this.id;
     }
 
@@ -64,7 +67,7 @@ public class Receita {
     }
 
     // Setter
-    public void setId(int id){
+    public void setId(Integer id){
         this.id = id;
     }
 
