@@ -14,12 +14,21 @@ public class Receita {
     private String modo_prep;
     @Column(name = "ingredientes")
     private String ingredientes;
+    @Column(name = "tempo")
+    private String tempo;
+    @Column(name = "qtd_pessoas")
+    private String qtd_pessoas;
+    @Column(name = "custo")
+    private String custo;
 
-    public Receita(int id, String nome, String modo_prep, String ingredientes){
+    public Receita(int id, String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo){
         this.id = id;
         this.nome = nome;
         this.modo_prep = modo_prep;
         this.ingredientes = ingredientes;
+        this.qtd_pessoas = qtd_pessoas;
+        this.tempo = tempo;
+        this.custo = custo;
     }
 
     // Getter
@@ -39,6 +48,18 @@ public class Receita {
         return this.ingredientes;
     }
 
+    public String getTempo(){
+        return this.tempo;
+    }
+
+    public String getQtdPessoas(){
+        return this.qtd_pessoas;
+    }
+
+    public String getCusto(){
+        return this.custo;
+    }
+
     // Setter
     public void setId(int id){
         this.id = id;
@@ -54,5 +75,17 @@ public class Receita {
 
     public void setIngredientes(String ingred){
         this.ingredientes = ingred;
+    }
+
+    public void setTempo(String tempo){
+        this.tempo = tempo;
+    }
+
+    public void setQtdPessoas(String qtd_pessoas){
+        this.qtd_pessoas = qtd_pessoas;
+    }
+
+    public void setCusto(String custo){
+        this.custo = custo;
     }
 }
