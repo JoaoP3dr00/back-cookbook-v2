@@ -1,9 +1,9 @@
 <h1>Backend da aplicação CookBook, cook é bom nada.</h1>
 <h2>Configuração do banco de dados</h2>
 <p>
-  SGBD: <b>Postgresql</b>
-  Nome: <b>banco_postgres_cb</b>
-  Arquivos de configuração: <b>application.properties e META-INF/persistence.xml</b>
+  SGBD: <b>Postgresql</b><br>
+  Nome: <b>banco_postgres_cb</b><br>
+  Arquivos de configuração: <b>application.properties e META-INF/persistence.xml</b><br>
   Configurando o postgres para a aplicação conectar:
   <ol>
     <li>Instalar o postgres na máquina</li>
