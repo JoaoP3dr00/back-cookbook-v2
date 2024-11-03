@@ -1,8 +1,5 @@
 package com.back.cookbook.dataac;
 
-import java.beans.JavaBean;
-
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.back.cookbook.business.Receita;
