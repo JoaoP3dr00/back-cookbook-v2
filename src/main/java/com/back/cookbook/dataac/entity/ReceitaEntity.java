@@ -1,18 +1,17 @@
-package com.back.cookbook.business;
+package com.back.cookbook.dataac.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity(name = "Receita")
 @Table(name = "Receita")
-public class Receita {
+public class ReceitaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "id")
     private Integer id;
     @Column(name = "nome")
@@ -28,7 +27,7 @@ public class Receita {
     @Column(name = "custo")
     private String custo;
 
-    public Receita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo){
+    public ReceitaEntity(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo){
         this.nome = nome;
         this.modo_prep = modo_prep;
         this.ingredientes = ingredientes;
