@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.back.cookbook.dataac.entity.ReceitaEntity;
-import com.back.cookbook.dataac.impl.ReceitaDAOImpl;
-
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/receita")
