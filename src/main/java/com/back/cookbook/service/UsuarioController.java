@@ -34,7 +34,7 @@ public class UsuarioController {
         try{
             boolean sla = usuarioManager.validaUsuario(login.getEmail(), login.getSenha());
             if(!sla)
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email ou senha inválidos");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha inválidos");
             else
                 return ResponseEntity.status(HttpStatus.OK).body("Login válido");
         }catch (Exception e){
