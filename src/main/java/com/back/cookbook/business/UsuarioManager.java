@@ -45,10 +45,13 @@ public class UsuarioManager {
     public Boolean validaUsuario(String email, String senha){
         UsuarioEntity u = userRepository.findByEmail(email);
 
-        if(!validaEmail(email))
-            return false;
-        if(u.getEmail().equals(email) && u.getSenha().equals(hashPassword(senha)))
-            return true;
+        if(u != null) {
+            if (!validaEmail(email))
+                return false;
+
+            if (u.getEmail().equals(email) && u.getSenha().equals(hashPassword(senha)))
+                return true;
+        }
         return false;
     }
 
