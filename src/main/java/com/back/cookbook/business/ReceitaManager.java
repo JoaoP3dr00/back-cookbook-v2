@@ -16,12 +16,11 @@ public class ReceitaManager {
     @Autowired(required = true)
     public ReceitaDAOImpl receitaDAO;
 
-    public void criarReceita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo){
-        ReceitaEntity receita = new ReceitaEntity(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo);
-
+    public void criarReceita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem) {
+        ReceitaEntity receita = new ReceitaEntity(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, imagem);
         receitaDAO.addReceita(receita);
-    }
-
+    }    
+    
     public ReceitaEntity obterReceitaPorId(Integer id) {
         return receitaDAO.getReceitaById(id);
     }

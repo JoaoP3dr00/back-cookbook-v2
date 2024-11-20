@@ -20,17 +20,18 @@ import jakarta.persistence.EntityManager;
 public class ReceitaDAOImpl implements ReceitaDAO{
     EntityManager em = ConnectionFactory.getConnection();
 
-    @Override   
-    public void addReceita(ReceitaEntity receita){
+    @Override
+    public void addReceita(ReceitaEntity receita) {
         try {
             em.getTransaction().begin();
             em.persist(receita);
-            System.out.println("SALVOU RECEITA ----------------------------------------------");
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
+            throw new RuntimeException("Erro ao salvar a receita no banco de dados: " + e.getMessage(), e);
         }
     }
+
 
     @Override
     public ReceitaEntity getReceitaById(Integer receitaId) {
