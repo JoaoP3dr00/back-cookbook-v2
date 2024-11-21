@@ -25,15 +25,16 @@ public class ReceitaManager {
         return receitaDAO.getReceitaById(id);
     }
     
-    public void atualizarReceita(Integer id, String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo) {
+    public void atualizarReceita(Integer id, String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem) {
         ReceitaEntity receita = receitaDAO.getReceitaById(id);
         if (receita != null) {
-            receita.setNome(nome);
-            receita.setModo_prep(modo_prep);
-            receita.setIngredientes(ingredientes);
-            receita.setTempo(tempo);
-            receita.setQtdPessoas(qtd_pessoas);
-            receita.setCusto(custo);
+            if (nome != null) receita.setNome(nome);
+            if (modo_prep != null) receita.setModo_prep(modo_prep);
+            if (ingredientes != null) receita.setIngredientes(ingredientes);
+            if (tempo != null) receita.setTempo(tempo);
+            if (qtd_pessoas != null) receita.setQtdPessoas(qtd_pessoas);
+            if (custo != null) receita.setCusto(custo);
+            if (imagem != null) receita.setImagem(imagem);
             receitaDAO.updateReceita(receita);
         }
     }
