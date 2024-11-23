@@ -96,16 +96,26 @@ public class ReceitaController {
     }
 
     @PutMapping("/atualizar")
-    public void atualizarReceita(
-        @RequestParam Integer id, 
-        @RequestParam String nome, 
-        @RequestParam String modo_prep, 
-        @RequestParam String ingredientes, 
-        @RequestParam String tempo, 
-        @RequestParam String qtd_pessoas, 
-        @RequestParam String custo
+    public ResponseEntity<String> atualizarReceita(
+        @RequestParam Integer id,
+        @RequestParam(required = false) String nome,
+        @RequestParam(required = false) String modo_prep,
+        @RequestParam(required = false) String ingredientes,
+        @RequestParam(required = false) String tempo,
+        @RequestParam(required = false) String qtd_pessoas,
+        @RequestParam(required = false) String custo,
+        @RequestParam(required = false) MultipartFile imagem
     ) {
-        receitaManager.atualizarReceita(id, nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo);
+        try {
+            String caminhoImagem = null;
+            if (imagem != null && !imagem.isEmpty()) {
+                caminhoImagem = salvarImagem(imagem);
+            }
+            receitaManager.atualizarReceita(id, nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, caminhoImagem);
+            return ResponseEntity.ok("Receita atualizada com sucesso.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar receita: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/deletar/{id}")
