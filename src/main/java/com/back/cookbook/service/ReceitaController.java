@@ -119,6 +119,7 @@ public class ReceitaController {
     }
 
     @GetMapping("/listar")
+    @CrossOrigin(origins = "http://localhost:8080")
     @ResponseBody
     public List<ReceitaEntity> listarReceitas() {
         return receitaManager.listarReceitas();
