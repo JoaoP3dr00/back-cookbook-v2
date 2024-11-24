@@ -65,7 +65,7 @@ public class ReceitaDAOImpl implements ReceitaDAO{
 
     @Override
     public List<ReceitaEntity> listReceitas() {
-        return em.createQuery("SELECT r FROM Receita r", ReceitaEntity.class).getResultList();
+        return em.createQuery("SELECT r FROM ReceitaEntity r", ReceitaEntity.class).getResultList();
     }
 
 }

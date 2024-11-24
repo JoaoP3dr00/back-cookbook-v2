@@ -1,7 +1,9 @@
 package com.back.cookbook.service;
 
 import com.back.cookbook.business.ReceitaManager;
+import com.back.cookbook.business.UsuarioManager;
 import com.back.cookbook.dataac.entity.ReceitaEntity;
+import com.back.cookbook.dataac.entity.UsuarioEntity;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +12,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,13 +29,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/receita")
 public class ReceitaController {
     @Autowired(required = true)
     ReceitaManager receitaManager;
+
+    @Autowired
+    UsuarioManager usuarioManager;
 
     @GetMapping("/")
     @ResponseBody
@@ -49,14 +54,22 @@ public class ReceitaController {
         @RequestParam(required = false, defaultValue = "") String tempo,
         @RequestParam(required = false, defaultValue = "") String qtd_pessoas,
         @RequestParam(required = false, defaultValue = "") String custo,
-        @RequestParam(value = "imagem", required = false) MultipartFile imagem
+        @RequestParam(value = "imagem", required = false) MultipartFile imagem,
+        @RequestParam String email
     ) {
         try {
+            UsuarioEntity usuario = usuarioManager.findByEmail(email);
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado.");
+            }
+
             String caminhoImagem = null;
             if (imagem != null && !imagem.isEmpty()) {
                 caminhoImagem = salvarImagem(imagem);
             }
-            receitaManager.criarReceita(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, caminhoImagem);
+            ReceitaEntity receita = new ReceitaEntity(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, caminhoImagem);
+            receita.setUsuario(usuario);
+            receitaManager.criarReceita(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, caminhoImagem, usuario);
             return ResponseEntity.ok("Receita adicionada com sucesso.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
@@ -131,8 +144,15 @@ public class ReceitaController {
     @GetMapping("/listar")
     @CrossOrigin(origins = "http://localhost:8080")
     @ResponseBody
-    public List<ReceitaEntity> listarReceitas() {
-        return receitaManager.listarReceitas();
+    public ResponseEntity<List<ReceitaEntity>> listarReceitas(@RequestParam String email) {
+        UsuarioEntity usuario = usuarioManager.findByEmail(email);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<ReceitaEntity> receitas = usuario.getReceitas();
+        // Optionally, set usuario to null in each receita to prevent nesting
+        receitas.forEach(receita -> receita.setUsuario(null));
+        return ResponseEntity.ok(receitas);
     }
 
 }

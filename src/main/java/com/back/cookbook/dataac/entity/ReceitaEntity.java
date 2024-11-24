@@ -5,7 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity(name = "Receita")
 @Table(name = "Receita")
@@ -35,6 +38,11 @@ public class ReceitaEntity {
 
     @Column(name = "imagem", nullable = true)
     private String imagem;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonBackReference
+    private UsuarioEntity usuario;
 
     // Construtor com todos os parâmetros
     public ReceitaEntity(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem) {
@@ -82,6 +90,14 @@ public class ReceitaEntity {
 
     public String getImagem() {
         return this.imagem;
+    }
+
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
     }
 
     // Setters
