@@ -28,9 +28,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:3000"})
 @RequestMapping("/receita")
 public class ReceitaController {
     @Autowired(required = true)
@@ -47,6 +52,7 @@ public class ReceitaController {
 
     // Retornar um erro ou código de erro se der errado
     @PostMapping(value = "/adicionar", consumes = "multipart/form-data")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<String> adicionar(
         @RequestParam String nome,
         @RequestParam(required = false, defaultValue = "") String modo_prep,
@@ -94,7 +100,7 @@ public class ReceitaController {
         }
 
         Files.copy(imagem.getInputStream(), caminhoCompleto, StandardCopyOption.REPLACE_EXISTING);
-        return caminhoCompleto.toString();
+        return nomeArquivo; // Retorna apenas o nome do arquivo
     }
 
     @GetMapping("/{id}")
@@ -109,6 +115,7 @@ public class ReceitaController {
     }
 
     @PutMapping("/atualizar")
+    @CrossOrigin(origins = "http://localhost:8080")
     public ResponseEntity<String> atualizarReceita(
         @RequestParam Integer id,
         @RequestParam(required = false) String nome,
@@ -153,6 +160,47 @@ public class ReceitaController {
         // Optionally, set usuario to null in each receita to prevent nesting
         receitas.forEach(receita -> receita.setUsuario(null));
         return ResponseEntity.ok(receitas);
+    }
+
+    @GetMapping("/imagem/{filename:.+}")
+    public ResponseEntity<Resource> servirImagem(@PathVariable String filename) {
+        try {
+            Path caminhoArquivo = Paths.get(UPLOAD_DIR).resolve(filename).normalize();
+            Resource recurso = new UrlResource(caminhoArquivo.toUri());
+
+            if (recurso.exists()) {
+                String contentType = Files.probeContentType(caminhoArquivo);
+                if (contentType == null) {
+                    contentType = "application/octet-stream";
+                }
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + recurso.getFilename() + "\"")
+                        .body(recurso);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/imagem/url/{filename:.+}")
+    public ResponseEntity<String> obterUrlImagem(@PathVariable String filename) {
+        try {
+            Path caminhoArquivo = Paths.get(UPLOAD_DIR).resolve(filename).normalize();
+            Resource recurso = new UrlResource(caminhoArquivo.toUri());
+
+            if (recurso.exists()) {
+                String url = recurso.getURI().toString();
+                return ResponseEntity.ok(url);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Imagem não encontrada.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao obter URL da imagem: " + e.getMessage());
+        }
     }
 
 }
