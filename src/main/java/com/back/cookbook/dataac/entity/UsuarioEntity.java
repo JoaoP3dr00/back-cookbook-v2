@@ -1,6 +1,8 @@
 package com.back.cookbook.dataac.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity(name = "Usuario")
 @Table(name = "Usuario")
@@ -13,6 +15,10 @@ public class UsuarioEntity {
     private String email;
     @Column(name = "senha")
     private String senha;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ReceitaEntity> receitas;
 
     // Contrutores
 
@@ -39,6 +45,10 @@ public class UsuarioEntity {
         return senha;
     }
 
+    public List<ReceitaEntity> getReceitas() {
+        return receitas;
+    }
+
     // Setter
 
     public void setId(Integer id) {
@@ -51,5 +61,9 @@ public class UsuarioEntity {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public void setReceitas(List<ReceitaEntity> receitas) {
+        this.receitas = receitas;
     }
 }

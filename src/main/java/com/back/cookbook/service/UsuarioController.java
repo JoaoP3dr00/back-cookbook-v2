@@ -2,6 +2,7 @@ package com.back.cookbook.service;
 
 import com.back.cookbook.business.DTO.LoginDTO;
 import com.back.cookbook.business.UsuarioManager;
+import com.back.cookbook.dataac.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,8 @@ public class UsuarioController {
                 return ResponseEntity.status(HttpStatus.OK).body("Usuario criado");
         } catch(Exception e){
             System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar usuário");
         }
-        return null;
     }
 
     @PostMapping("/login")
@@ -39,7 +40,23 @@ public class UsuarioController {
                 return ResponseEntity.status(HttpStatus.OK).body("Login válido");
         }catch (Exception e){
             System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao realizar login");
         }
-        return null;
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<UsuarioEntity> buscarUsuario(@RequestParam String email) {
+        try {
+            UsuarioEntity usuario = usuarioManager.findByEmail(email);
+            if (usuario != null) {
+                usuario.setReceitas(null); // Prevent sending receitas
+                return ResponseEntity.ok(usuario);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

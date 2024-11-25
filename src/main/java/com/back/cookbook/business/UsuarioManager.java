@@ -9,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 @Service
 public class UsuarioManager {
     @Autowired(required = true)
@@ -88,5 +87,9 @@ public class UsuarioManager {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public UsuarioEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
