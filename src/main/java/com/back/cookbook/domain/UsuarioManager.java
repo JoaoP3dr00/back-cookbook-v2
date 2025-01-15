@@ -52,7 +52,7 @@ public class UsuarioManager {
             if (u.getEmail().equals(email) && u.getSenha().equals(hashPassword(senha)))
                 return true;
         }
-        
+
         return false;
     }
 
@@ -72,6 +72,10 @@ public class UsuarioManager {
         return matcher.matches();
     }
 
+    public UsuarioEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public static String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -89,9 +93,5 @@ public class UsuarioManager {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public UsuarioEntity findByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 }
