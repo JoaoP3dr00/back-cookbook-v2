@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.back.cookbook.dataac.entity.ReceitaEntity;
+import com.back.cookbook.domain.entity.ReceitaEntity;
 
 /* 
  * Inteface DAO (Data Access Object) para realizar operações no banco 

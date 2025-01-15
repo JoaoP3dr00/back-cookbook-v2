@@ -1,8 +1,8 @@
 package com.back.cookbook.service;
 
-import com.back.cookbook.business.DTO.LoginDTO;
-import com.back.cookbook.business.UsuarioManager;
-import com.back.cookbook.dataac.entity.UsuarioEntity;
+import com.back.cookbook.service.DTO.LoginDTO;
+import com.back.cookbook.domain.UsuarioManager;
+import com.back.cookbook.domain.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

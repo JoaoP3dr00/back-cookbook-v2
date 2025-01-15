@@ -1,10 +1,9 @@
 package com.back.cookbook.service;
 
-import com.back.cookbook.business.ReceitaManager;
-import com.back.cookbook.business.UsuarioManager;
-import com.back.cookbook.dataac.entity.ReceitaEntity;
-import com.back.cookbook.dataac.entity.UsuarioEntity;
-
+import com.back.cookbook.domain.ReceitaManager;
+import com.back.cookbook.domain.UsuarioManager;
+import com.back.cookbook.domain.entity.ReceitaEntity;
+import com.back.cookbook.domain.entity.UsuarioEntity;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,8 +11,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
-import java.util.ArrayList;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +30,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:8080", "http://localhost:3000"})
@@ -43,12 +40,6 @@ public class ReceitaController {
 
     @Autowired
     UsuarioManager usuarioManager;
-
-    @GetMapping("/")
-    @ResponseBody
-    public String getReceitas(){
-        return "oi";
-    }
 
     // Retornar um erro ou código de erro se der errado
     @PostMapping(value = "/adicionar", consumes = "multipart/form-data")
@@ -106,7 +97,9 @@ public class ReceitaController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<ReceitaEntity> obterReceita(@PathVariable Integer id) {
-        ReceitaEntity receita = receitaManager.obterReceitaPorId(id);
+        Optional<ReceitaEntity> receita_optional = receitaManager.obterReceitaPorId(id);
+        ReceitaEntity receita = receita_optional.orElseThrow(() -> new RuntimeException("Receita não encontrada"));
+
         if (receita != null) {
             return ResponseEntity.ok(receita);
         } else {

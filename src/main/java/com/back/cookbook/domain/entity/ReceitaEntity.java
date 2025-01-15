@@ -1,4 +1,4 @@
-package com.back.cookbook.dataac.entity;
+package com.back.cookbook.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

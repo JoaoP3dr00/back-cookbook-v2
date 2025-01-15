@@ -1,11 +1,11 @@
-package com.back.cookbook.business;
+package com.back.cookbook.domain;
 
-import com.back.cookbook.dataac.entity.ReceitaEntity;
-import com.back.cookbook.dataac.entity.UsuarioEntity;
-import com.back.cookbook.dataac.impl.ReceitaDAOImpl;
-
+import com.back.cookbook.domain.entity.ReceitaEntity;
+import com.back.cookbook.domain.entity.UsuarioEntity;
+//import com.back.cookbook.dataac.impl.ReceitaDAOImpl;
+import com.back.cookbook.dataac.repositories.ReceitaRepository;
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +15,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReceitaManager {
     @Autowired(required = true)
-    public ReceitaDAOImpl receitaDAO;
+    public ReceitaRepository receitarepository;
 
     public void criarReceita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem, UsuarioEntity usuario) {
         ReceitaEntity receita = new ReceitaEntity(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, imagem);
         receita.setUsuario(usuario);
-        receitaDAO.addReceita(receita);
+        receitarepository.save(receita);
     }    
     
-    public ReceitaEntity obterReceitaPorId(Integer id) {
-        return receitaDAO.getReceitaById(id);
+    public Optional<ReceitaEntity> obterReceitaPorId(Integer id) {
+        return receitarepository.findById(id);
     }
     
     public void atualizarReceita(Integer id, String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem) {
-        ReceitaEntity receita = receitaDAO.getReceitaById(id);
+        Optional<ReceitaEntity> receitaOptional = receitarepository.findById(id);
+        ReceitaEntity receita = receitaOptional.orElseThrow(() -> new RuntimeException("Receita não encontrada"));
+        
         if (receita != null) {
             if (nome != null) receita.setNome(nome);
             if (modo_prep != null) receita.setModo_prep(modo_prep);
@@ -37,15 +39,15 @@ public class ReceitaManager {
             if (qtd_pessoas != null) receita.setQtdPessoas(qtd_pessoas);
             if (custo != null) receita.setCusto(custo);
             if (imagem != null) receita.setImagem(imagem);
-            receitaDAO.updateReceita(receita);
+            receitarepository.saveAndFlush(receita);
         }
     }
     
     public void deletarReceita(Integer id) {
-        receitaDAO.deleteReceita(id);
+        receitarepository.deleteById(id);
     }
     
     public List<ReceitaEntity> listarReceitas() {
-        return receitaDAO.listReceitas();
+        return receitarepository.findAll();
     }    
 }

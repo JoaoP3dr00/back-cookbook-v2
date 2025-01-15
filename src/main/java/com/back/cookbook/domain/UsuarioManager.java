@@ -1,6 +1,6 @@
-package com.back.cookbook.business;
+package com.back.cookbook.domain;
 
-import com.back.cookbook.dataac.entity.UsuarioEntity;
+import com.back.cookbook.domain.entity.UsuarioEntity;
 import com.back.cookbook.dataac.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,7 @@ public class UsuarioManager {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -51,6 +52,7 @@ public class UsuarioManager {
             if (u.getEmail().equals(email) && u.getSenha().equals(hashPassword(senha)))
                 return true;
         }
+        
         return false;
     }
 
