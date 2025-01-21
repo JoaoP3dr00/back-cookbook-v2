@@ -1,6 +1,6 @@
 package com.back.cookbook.domain;
 
-import com.back.cookbook.domain.entity.UsuarioEntity;
+import com.back.cookbook.domain.entity.UserEntity;
 import com.back.cookbook.dataac.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class UsuarioManager {
+public class UserManager {
     @Autowired(required = true)
     UserRepository userRepository;
 
@@ -25,8 +25,8 @@ public class UsuarioManager {
     public Boolean criarUsuario(String email, String senha) {
         if (validaEmail(email)){
             if(!userRepository.existsByEmail(email)){
-                UsuarioEntity usuario = new UsuarioEntity(email, hashPassword(senha));
-                userRepository.save(usuario);
+                //UserEntity usuario = new UserEntity(email, hashPassword(senha));
+                //userRepository.save(usuario);
 
                 return true;
             }
@@ -43,7 +43,7 @@ public class UsuarioManager {
      * @return
      */
     public Boolean validaUsuario(String email, String senha){
-        UsuarioEntity u = userRepository.findByEmail(email);
+        UserEntity u = userRepository.findByEmail(email);
 
         if(u != null) {
             if (!validaEmail(email))
@@ -72,7 +72,7 @@ public class UsuarioManager {
         return matcher.matches();
     }
 
-    public UsuarioEntity findByEmail(String email) {
+    public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 

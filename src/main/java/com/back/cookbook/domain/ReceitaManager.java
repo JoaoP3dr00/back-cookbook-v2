@@ -1,7 +1,7 @@
 package com.back.cookbook.domain;
 
 import com.back.cookbook.domain.entity.ReceitaEntity;
-import com.back.cookbook.domain.entity.UsuarioEntity;
+import com.back.cookbook.domain.entity.UserEntity;
 //import com.back.cookbook.dataac.impl.ReceitaDAOImpl;
 import com.back.cookbook.dataac.repositories.ReceitaRepository;
 import java.util.List;
@@ -17,7 +17,7 @@ public class ReceitaManager {
     @Autowired(required = true)
     public ReceitaRepository receitarepository;
 
-    public void criarReceita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem, UsuarioEntity usuario) {
+    public void criarReceita(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem, UserEntity usuario) {
         ReceitaEntity receita = new ReceitaEntity(nome, modo_prep, ingredientes, tempo, qtd_pessoas, custo, imagem);
         receita.setUsuario(usuario);
         receitarepository.save(receita);
