@@ -1,10 +1,13 @@
 package com.back.cookbook.service;
 
+import java.net.http.HttpHeaders;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
@@ -18,7 +21,9 @@ import com.back.cookbook.domain.DTO.RegisterDTO;
 import com.back.cookbook.domain.entity.UserEntity;
 import com.back.cookbook.security.TokenService;
 
+
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/auth")
 public class AuthenticationController {
     @Autowired
@@ -31,7 +36,7 @@ public class AuthenticationController {
     private TokenService token_service;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
 
         var auth = this.authenticationManager.authenticate(usernamePassword);
