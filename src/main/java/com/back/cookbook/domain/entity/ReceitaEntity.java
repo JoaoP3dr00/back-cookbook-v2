@@ -42,7 +42,7 @@ public class ReceitaEntity {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     @JsonBackReference
-    private UsuarioEntity usuario;
+    private UserEntity usuario;
 
     // Construtor com todos os parâmetros
     public ReceitaEntity(String nome, String modo_prep, String ingredientes, String tempo, String qtd_pessoas, String custo, String imagem) {
@@ -92,11 +92,11 @@ public class ReceitaEntity {
         return this.imagem;
     }
 
-    public UsuarioEntity getUsuario() {
+    public UserEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(UsuarioEntity usuario) {
+    public void setUsuario(UserEntity usuario) {
         this.usuario = usuario;
     }
 

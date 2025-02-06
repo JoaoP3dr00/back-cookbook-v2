@@ -1,9 +1,9 @@
 package com.back.cookbook.service;
 
 import com.back.cookbook.domain.ReceitaManager;
-import com.back.cookbook.domain.UsuarioManager;
+import com.back.cookbook.domain.UserManager;
 import com.back.cookbook.domain.entity.ReceitaEntity;
-import com.back.cookbook.domain.entity.UsuarioEntity;
+import com.back.cookbook.domain.entity.UserEntity;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,7 +39,7 @@ public class ReceitaController {
     ReceitaManager receitaManager;
 
     @Autowired
-    UsuarioManager usuarioManager;
+    UserManager usuarioManager;
 
     // Retornar um erro ou código de erro se der errado
     @PostMapping(value = "/adicionar", consumes = "multipart/form-data")
@@ -55,7 +55,7 @@ public class ReceitaController {
         @RequestParam String email
     ) {
         try {
-            UsuarioEntity usuario = usuarioManager.findByEmail(email);
+            UserEntity usuario = usuarioManager.findByEmail(email);
             if (usuario == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado.");
             }
@@ -145,7 +145,7 @@ public class ReceitaController {
     @CrossOrigin(origins = "http://localhost:8080")
     @ResponseBody
     public ResponseEntity<List<ReceitaEntity>> listarReceitas(@RequestParam String email) {
-        UsuarioEntity usuario = usuarioManager.findByEmail(email);
+        UserEntity usuario = usuarioManager.findByEmail(email);
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

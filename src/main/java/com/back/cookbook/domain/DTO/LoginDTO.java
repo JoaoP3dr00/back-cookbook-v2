@@ -1,4 +1,4 @@
-package com.back.cookbook.service.DTO;
+package com.back.cookbook.domain.DTO;
 
 public class LoginDTO {
     private String email;
